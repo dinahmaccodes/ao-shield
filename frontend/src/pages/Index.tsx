@@ -26,35 +26,35 @@ const FEATURES: FeatureItem[] = [
     title: "Real-Time Protection",
     description:
       "Every transaction is scanned for scams, phishing patterns, and malicious approvals before they hit the chain.",
-    icon: <Search className="h-7 w-7" aria-hidden />,
+    icon: <Search className="feature-icon" aria-hidden />,
   },
   {
     id: "xai",
     title: "Explainable AI",
     description:
       "No black boxes. Get clear, human-readable reasons any warning is flagged so actions are safer.",
-    icon: <MessageSquare className="h-7 w-7" aria-hidden />,
+    icon: <MessageSquare className="feature-icon" aria-hidden />,
   },
   {
     id: "scammem",
     title: "Scam Memory",
     description:
       "Fraud data is stored on Arweave, creating a tamper-proof intelligence network that every user benefits from.",
-    icon: <FolderKanban className="h-7 w-7" aria-hidden />,
+    icon: <FolderKanban className="feature-icon" aria-hidden />,
   },
   {
     id: "uitl",
     title: "User-in-the-Loop",
     description:
       "You approve or reject transactions, while feedback strengthens the system for everyone.",
-    icon: <CheckCircle2 className="h-7 w-7" aria-hidden />,
+    icon: <CheckCircle2 className="feature-icon" aria-hidden />,
   },
   {
     id: "seamless",
     title: "Seamless Integration",
     description:
       "Works behind the scenes with wallets and dapps to block threats without slowing you down.",
-    icon: <RefreshCw className="h-7 w-7" aria-hidden />,
+    icon: <RefreshCw className="feature-icon" aria-hidden />,
   },
 ];
 
@@ -146,13 +146,27 @@ const LightBulbDivider: React.FC = () => {
   // This component becomes the hover source that brightens the next section
   return (
     <div className="group relative flex items-center justify-center py-8">
+      {/* Main light orb - more oval shaped */}
       <div
-        className="h-3 w-16 rounded-full bg-white/80 opacity-90 shadow-[0_0_30px_10px_rgba(255,255,255,0.35)] transition-all duration-300 ease-in-out hover:shadow-[0_0_80px_24px_rgba(255,255,255,0.55)]"
+        className="light-orb-main h-4 w-20 rounded-full bg-white/90 opacity-95 shadow-[0_0_40px_12px_rgba(255,255,255,0.4)] transition-all duration-500 ease-in-out hover:shadow-[0_0_100px_30px_rgba(255,255,255,0.6)] hover:h-5 hover:w-24"
         aria-hidden
       />
-      {/* Downward light field */}
+
+      {/* Inner bright core */}
       <div
-        className="pointer-events-none absolute top-2 h-24 w-[36rem] -translate-y-2 rounded-full opacity-0 transition duration-300 ease-in-out group-hover:opacity-100 [background:radial-gradient(closest-side,rgba(255,255,255,0.5),rgba(255,255,255,0.12)_40%,transparent_70%)]"
+        className="pointer-events-none absolute h-2 w-12 rounded-full bg-white opacity-100 transition-all duration-500 ease-in-out group-hover:h-3 group-hover:w-16"
+        aria-hidden
+      />
+
+      {/* Downward light field - more realistic dimming */}
+      <div
+        className="light-field-down pointer-events-none absolute top-4 h-32 w-[40rem] -translate-y-2 rounded-full opacity-0 transition-all duration-500 ease-in-out group-hover:opacity-80"
+        aria-hidden
+      />
+
+      {/* Extended subtle glow field */}
+      <div
+        className="light-glow-extended pointer-events-none absolute top-6 h-48 w-[50rem] -translate-y-4 rounded-full opacity-0 transition-all duration-700 ease-in-out group-hover:opacity-40"
         aria-hidden
       />
     </div>
@@ -166,26 +180,21 @@ const Features: React.FC = () => {
       className="relative z-10 mx-auto max-w-7xl scroll-mt-24 px-4 py-16 text-white sm:py-24"
     >
       <div className="mx-auto max-w-3xl text-center">
-        <h2 className="text-pretty text-2xl font-bold sm:text-3xl">
+        <h2 className="features-title text-white">
           Always standing between you and attackers
         </h2>
-        <p className="mt-3 text-sm text-white/70">
+        <p className="features-subtitle mt-6 text-white/70">
           Our AI security bot combines fraud detection, threat intelligence, and
           permanent storage to keep you safe across the blockchain.
         </p>
       </div>
 
-      <div className="mt-10 grid gap-4 sm:mt-12 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-10 grid gap-6 sm:mt-12 sm:grid-cols-2 lg:grid-cols-3">
         {FEATURES.map((f) => (
-          <article
-            key={f.id}
-            className="group relative rounded-2xl border border-white/10 bg-gradient-to-b from-white/5 to-transparent p-5 transition-transform duration-300 ease-in-out hover:-translate-y-1 hover:shadow-[0_10px_30px_0_rgba(0,229,255,0.15)]"
-          >
-            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-white/5 text-cyan-300 ring-1 ring-white/10">
-              {f.icon}
-            </div>
-            <h3 className="text-base font-semibold">{f.title}</h3>
-            <p className="mt-2 text-sm text-white/70">{f.description}</p>
+          <article key={f.id} className="feature-card">
+            {f.icon}
+            <h3 className="feature-title">{f.title}</h3>
+            <p className="feature-description">{f.description}</p>
           </article>
         ))}
         {/* Empty cell to make 5 cards center on large screens */}
@@ -259,10 +268,7 @@ const HowWeProtect: React.FC = () => {
             </div>
 
             {/* Connection lines */}
-            <svg
-              className="absolute inset-0 w-full h-full pointer-events-none"
-              style={{ zIndex: -1 }}
-            >
+            <svg className="connection-lines-svg absolute inset-0 w-full h-full pointer-events-none">
               <defs>
                 <linearGradient
                   id="lineGradient"
