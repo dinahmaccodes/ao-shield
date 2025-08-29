@@ -62,36 +62,29 @@ const TopNav: React.FC = () => {
   return (
     <header className="sticky top-0 z-40 w-full border-b border-white/5 bg-black/60 backdrop-blur supports-[backdrop-filter]:bg-black/30">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
-        <a
-          href="#top"
-          className="group inline-flex items-center gap-2"
-          aria-label="Shield home"
-        >
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white/5 ring-1 ring-white/10">
-            <span className="text-white/80 font-bold text-sm">a</span>
-          </div>
-          <span className="font-semibold tracking-wide text-white">Shield</span>
-        </a>
+        <div className="flex items-center gap-3">
+          <img src="/aoshieldname.svg" alt="aoshield-logo" />
+        </div>
 
         <div className="flex items-center gap-8">
-          <nav className="hidden items-center gap-8 text-sm text-white/70 md:flex">
+          <nav className="hidden items-center gap-8 md:flex">
             <a
               href="#features"
-              className="hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/60 rounded"
+              className="nav-link focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/60 rounded"
             >
               Features
             </a>
             <a
               href="#how"
-              className="hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/60 rounded"
+              className="nav-link focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/60 rounded"
             >
-              How it Works
+              How it works
             </a>
             <a
               href="#security"
-              className="hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/60 rounded"
+              className="nav-link focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/60 rounded"
             >
-              Security
+              Benefits
             </a>
           </nav>
           <GetExtensionButton />
@@ -106,9 +99,7 @@ const GetExtensionButton: React.FC<{ className?: string }> = ({
 }) => {
   return (
     <button
-      className={`rounded-full bg-white/5 px-4 py-2 text-sm text-white transition hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/70 ${
-        className ?? ""
-      }`}
+      className={`get-extension-btn ${className ?? ""}`}
       aria-label="Get Extension"
     >
       Get Extension
@@ -123,22 +114,21 @@ const Hero: React.FC = () => {
       className="relative isolate flex min-h-screen items-center justify-center overflow-hidden bg-[#0a0a0a] px-4 py-20 text-center text-white"
     >
       {/* Subtle vignette corners */}
-      <div className="pointer-events-none absolute inset-0 rounded-[2rem] border border-white/5 shadow-[inset_0_0_120px_rgba(255,255,255,0.04)]" />
-
+      <div className="pointer-events-none absolute inset-0 rounded-[2rem] border border-white/5 glow-frame-bg" />{" "}
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className="relative z-10 mx-auto max-w-3xl"
+        className="relative z-10 mx-auto max-w-4xl"
       >
-        <p className="mb-3 text-3xl font-extrabold tracking-tight sm:text-5xl">
+        <h1 className="hero-title mb-6 text-white">
           <span className="block">AI-Powered</span>
           <span className="block bg-gradient-to-b from-white to-white/80 bg-clip-text text-transparent">
             Blockchain Security
           </span>
-        </p>
-        <p className="mx-auto max-w-2xl text-balance text-sm text-white/70 sm:text-base">
-          Protect your transactions with provenance threats intelligence and
+        </h1>
+        <p className="hero-subtitle mx-auto max-w-3xl text-balance text-white/70">
+          Protect your transactions with permanent threats intelligence and
           real-time fraud detection
         </p>
 
@@ -146,7 +136,6 @@ const Hero: React.FC = () => {
           <GetExtensionButton />
         </div>
       </motion.div>
-
       {/* Dust / stars */}
       <div className="pointer-events-none absolute inset-0 opacity-30 [background:radial-gradient(1000px_600px_at_50%_0%,rgba(0,229,255,0.08),transparent_60%),radial-gradient(500px_400px_at_10%_30%,rgba(255,255,255,0.06),transparent_60%),radial-gradient(500px_400px_at_90%_40%,rgba(255,255,255,0.06),transparent_60%)]" />
     </section>
