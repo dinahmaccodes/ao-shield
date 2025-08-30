@@ -1,15 +1,11 @@
-import React, { useMemo, useState } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import {
-  Shield as ShieldIcon,
   MessageSquare,
   FolderKanban,
   RefreshCw,
   Search,
   CheckCircle2,
-  Twitter,
-  Github,
-  MessageCircle,
 } from "lucide-react";
 
 // --- Types ---
@@ -107,6 +103,19 @@ const GetExtensionButton: React.FC<{ className?: string }> = ({
   );
 };
 
+const ConnectWalletButton: React.FC<{ className?: string }> = ({
+  className,
+}) => {
+  return (
+    <button
+      className={`connect-wallet-btn ${className ?? ""}`}
+      aria-label="Connect Wallet"
+    >
+      Connect Wallet
+    </button>
+  );
+};
+
 const Hero: React.FC = () => {
   return (
     <section
@@ -177,7 +186,7 @@ const Features: React.FC = () => {
   return (
     <section
       id="features"
-      className="relative z-10 mx-auto max-w-7xl scroll-mt-24 px-4 py-16 text-white sm:py-24"
+      className="section-padding relative z-10 mx-auto max-w-7xl scroll-mt-24 py-16 text-white sm:py-24"
     >
       <div className="mx-auto max-w-3xl text-center">
         <h2 className="features-title text-white">
@@ -206,119 +215,60 @@ const Features: React.FC = () => {
 
 const HowWeProtect: React.FC = () => {
   return (
-    <section id="how" className="mx-auto max-w-7xl px-4 py-20 text-white">
-      <h2 className="mb-10 text-center text-2xl font-bold sm:text-3xl">
-        How We Protect You
-      </h2>
+    <section
+      id="how"
+      className="section-padding mx-auto max-w-7xl py-20 text-white"
+    >
+      <h2 className="how-we-protect-title">How We Protect You</h2>
 
       <div className="relative max-w-6xl mx-auto">
-        {/* Central 3D Platform */}
+        {/* Central Platform */}
         <div className="flex justify-center items-center relative">
-          <div className="platform-3d w-80 h-80 mx-auto relative">
-            {/* Platform layers */}
-            <div className="absolute inset-4 bg-gradient-to-b from-white/10 to-white/5 rounded-full"></div>
-            <div className="absolute inset-8 bg-gradient-to-b from-white/8 to-transparent rounded-full"></div>
-            <div className="absolute inset-12 bg-gradient-to-b from-cyan-400/10 to-transparent rounded-full"></div>
-          </div>
+          <div className="platform-glow mx-auto relative"></div>
 
           {/* Feature boxes positioned around the platform */}
           <div className="absolute inset-0">
-            {/* Top left */}
-            <div className="absolute top-8 left-8 bg-white/5 border border-white/10 rounded-lg p-4 max-w-xs backdrop-blur-sm">
-              <h3 className="text-sm font-semibold text-white mb-2">
-                Scan Instantly
-              </h3>
-              <p className="text-xs text-white/70">
-                Real-time scanning of all transactions and smart contracts for
-                potential threats
+            {/* Top left - Scan Instantly */}
+            <div className="protection-feature-box softness-maximum feature-box-top-left">
+              <h3 className="protection-feature-title">Scan Instantly</h3>
+              <p className="protection-feature-description">
+                The AI Security Bot reviews every wallet address, and
+                transaction the moment you interact with it, catching the
+                threats before they reach the blockchain.
               </p>
             </div>
 
-            {/* Top right */}
-            <div className="absolute top-8 right-8 bg-white/5 border border-white/10 rounded-lg p-4 max-w-xs backdrop-blur-sm">
-              <h3 className="text-sm font-semibold text-white mb-2">
+            {/* Top right - Compare with Permanent Records */}
+            <div className="protection-feature-box softness-maximum feature-box-top-right">
+              <h3 className="protection-feature-title">
                 Compare with Permanent Records
               </h3>
-              <p className="text-xs text-white/70">
-                Cross-reference with our extensive database of known threats and
-                scams
+              <p className="protection-feature-description">
+                It cross-references against a permanent fraud archive on
+                Arweave.
               </p>
             </div>
 
-            {/* Bottom left */}
-            <div className="absolute bottom-8 left-8 bg-white/5 border border-white/10 rounded-lg p-4 max-w-xs backdrop-blur-sm">
-              <h3 className="text-sm font-semibold text-white mb-2">
-                Protect Your Assets
-              </h3>
-              <p className="text-xs text-white/70">
-                Proactive protection of your digital assets from fraudulent
-                activities
+            {/* Bottom left - Protect Your Assets */}
+            <div className="protection-feature-box softness-maximum feature-box-bottom-left">
+              <h3 className="protection-feature-title">Protect Your Assets</h3>
+              <p className="protection-feature-description">
+                You confirm or reject, risky actions are auto-blocked if
+                ignored.
               </p>
             </div>
 
-            {/* Bottom right */}
-            <div className="absolute bottom-8 right-8 bg-white/5 border border-white/10 rounded-lg p-4 max-w-xs backdrop-blur-sm">
-              <h3 className="text-sm font-semibold text-white mb-2">
+            {/* Bottom right - Explain in Plain Language */}
+            <div className="protection-feature-box feature-box-bottom-right softness-maximum">
+              <h3 className="protection-feature-title">
                 Explain in Plain Language
               </h3>
-              <p className="text-xs text-white/70">
-                Clear, understandable explanations of security decisions and
-                threats
+              <p className="protection-feature-description">
+                Instead of confusing alerts, the bot gives you clear
+                explanations you can trust: "This transaction looks routine and
+                safe"
               </p>
             </div>
-
-            {/* Connection lines */}
-            <svg className="connection-lines-svg absolute inset-0 w-full h-full pointer-events-none">
-              <defs>
-                <linearGradient
-                  id="lineGradient"
-                  x1="0%"
-                  y1="0%"
-                  x2="100%"
-                  y2="100%"
-                >
-                  <stop offset="0%" stopColor="#00e5ff" stopOpacity="0.3" />
-                  <stop offset="100%" stopColor="#00e5ff" stopOpacity="0.1" />
-                </linearGradient>
-              </defs>
-              {/* Lines connecting boxes to center */}
-              <line
-                x1="25%"
-                y1="25%"
-                x2="50%"
-                y2="50%"
-                stroke="url(#lineGradient)"
-                strokeWidth="2"
-                strokeDasharray="5,5"
-              />
-              <line
-                x1="75%"
-                y1="25%"
-                x2="50%"
-                y2="50%"
-                stroke="url(#lineGradient)"
-                strokeWidth="2"
-                strokeDasharray="5,5"
-              />
-              <line
-                x1="25%"
-                y1="75%"
-                x2="50%"
-                y2="50%"
-                stroke="url(#lineGradient)"
-                strokeWidth="2"
-                strokeDasharray="5,5"
-              />
-              <line
-                x1="75%"
-                y1="75%"
-                x2="50%"
-                y2="50%"
-                stroke="url(#lineGradient)"
-                strokeWidth="2"
-                strokeDasharray="5,5"
-              />
-            </svg>
           </div>
         </div>
       </div>
@@ -328,32 +278,51 @@ const HowWeProtect: React.FC = () => {
 
 const IntroProduct: React.FC = () => {
   return (
-    <section id="security" className="mx-auto max-w-7xl px-4 py-20 text-white">
-      <div className="grid items-center gap-8 md:grid-cols-2">
-        <div>
-          <h2 className="text-2xl font-bold sm:text-3xl">
-            Introducing AO Shield
-          </h2>
-          <p className="mt-3 text-sm text-white/70">
+    <section
+      id="security"
+      className="section-padding mx-auto max-w-7xl py-20 text-white"
+    >
+      <div className="intro-product-container">
+        <div className="intro-product-content">
+          <h2 className="intro-product-title">Introducing AO Shield</h2>
+          <p className="intro-product-description">
             AO Shield is an AI-powered fraud detection and protection system
             built on AO, Arweave's scalable compute layer. It identifies scams,
             flags malicious actors, and secures transactions in real time — with
             a permanent memory of threats stored on the permaweb.
           </p>
-          <p className="mt-3 text-sm text-white/70">
+          <p className="intro-product-description">
             By combining adaptive AI defense with AO's decentralized
             architecture, AO Shield delivers trustless, transparent protection
             that can't be erased or manipulated — starting with Nigeria-first
             use cases and built to scale globally.
           </p>
         </div>
-        <div className="mx-auto h-56 w-56 rounded-3xl bg-gradient-to-b from-white/10 to-transparent p-6 ring-1 ring-white/10 md:h-72 md:w-72">
-          <div className="flex h-full w-full items-center justify-center rounded-2xl bg-black/60 shadow-[inset_0_0_30px_rgba(255,255,255,0.08),0_10px_60px_rgba(0,229,255,0.2)]">
-            <ShieldIcon
-              className="h-24 w-24 text-white/80 md:h-28 md:w-28"
-              aria-hidden
-            />
-          </div>
+        <img
+          src="/Shield.svg"
+          alt="AO Shield"
+          className="intro-product-shield-icon"
+          aria-hidden
+        />
+      </div>
+    </section>
+  );
+};
+
+const BottomCTA: React.FC = () => {
+  return (
+    <section className="bottom-cta-section section-padding">
+      <div className="bottom-cta-content">
+        <div className="bottom-cta-text">
+          <h2 className="bottom-cta-title">Experience AO Shield Today</h2>
+          <p className="bottom-cta-description">
+            Tap into AI intelligence and decentralized protection. With AO
+            Shield, your defense against scams is always on, transparent, and
+            impossible to erase.
+          </p>
+        </div>
+        <div className="bottom-cta-actions">
+          <ConnectWalletButton className="bottom-cta-button" />
         </div>
       </div>
     </section>
@@ -363,37 +332,29 @@ const IntroProduct: React.FC = () => {
 const Footer: React.FC = () => {
   const social = [
     {
-      id: "tw",
-      label: "Twitter",
-      icon: <Twitter className="h-5 w-5" />,
+      id: "x",
+      label: "X (Twitter)",
+      icon: <img src="/XLogo.svg" alt="X" className="h-9 w-9" />,
       href: "#",
     },
     {
       id: "gh",
       label: "GitHub",
-      icon: <Github className="h-5 w-5" />,
+      icon: <img src="/GithubLogo.svg" alt="GitHub" className="h-9 w-9" />,
       href: "#",
     },
     {
       id: "dc",
       label: "Discord",
-      icon: <MessageCircle className="h-5 w-5" />,
+      icon: <img src="/DiscordLogo.svg" alt="Discord" className="h-9 w-9" />,
       href: "#",
     },
   ];
   return (
-    <footer className="border-t border-white/10 bg-black/60 text-white">
-      <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-6 px-4 py-10 sm:grid-cols-3 sm:px-6 lg:px-8">
-        <div className="flex items-center gap-3">
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white/5 ring-1 ring-white/10">
-            <span className="text-white/80 font-bold text-sm">a</span>
-          </div>
-          <div className="text-sm">
-            <p className="font-semibold">Shield</p>
-            <p className="text-white/60">
-              © 2025 AO Shield. All rights reserved.
-            </p>
-          </div>
+    <footer className="bg-black/60 text-white">
+      <div className="footer-content">
+        <div className="flex items-center gap-3 footer-logo-section">
+          <img src="/footer-aoshield.svg" alt="aoshield-logo" />
         </div>
         <nav className="justify-center gap-6 text-sm text-white/70 sm:flex">
           <a
@@ -421,19 +382,17 @@ const Footer: React.FC = () => {
               key={s.id}
               href={s.href}
               aria-label={s.label}
-              className="group inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/5 ring-1 ring-white/10 transition-all duration-300 ease-in-out hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/70"
+              className="group inline-flex items-center justify-center transition-all duration-300 ease-in-out hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/70"
             >
-              <span
-                className="text-white/80 transition group-hover:text-white"
-                aria-hidden
-              >
-                {s.icon}
-              </span>
-              {/* Inward glow */}
-              <span className="pointer-events-none absolute inset-0 rounded-full opacity-0 transition duration-300 ease-in-out group-hover:opacity-100 shadow-[inset_0_0_16px_4px_rgba(0,229,255,0.45)]" />
+              {s.icon}
             </a>
           ))}
         </div>
+      </div>
+
+      {/* Copyright section moved to bottom */}
+      <div className="footer-copyright-text">
+        © 2025 AO Shield. All rights reserved. | Privacy Policy | Terms of Use
       </div>
     </footer>
   );
@@ -451,6 +410,7 @@ const Page: React.FC = () => {
       <Features />
       <HowWeProtect />
       <IntroProduct />
+      <BottomCTA />
       <Footer />
     </div>
   );
