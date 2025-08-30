@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AO Shield</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <div class="popup-container">
+      <header class="popup-header">
+        <div class="logo-section">
+          <img src="icons/icon32.png" alt="AO Shield" class="logo" />
+          <h1 class="title">AO Shield</h1>
+        </div>
+        <div class="status-indicator" id="status">
+          <span class="status-dot active"></span>
+          <span class="status-text">Protected</span>
+        </div>
+      </header>
+
+      <main class="popup-main">
+        <div class="threat-summary">
+          <h2>Transaction Security</h2>
+          <div class="threat-stats">
+            <div class="stat-item">
+              <span class="stat-number" id="threatsBlocked">0</span>
+              <span class="stat-label">Threats Blocked</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number" id="scansToday">0</span>
+              <span class="stat-label">Scans Today</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="recent-activity">
+          <h3>Recent Activity</h3>
+          <div class="activity-list" id="activityList">
+            <div class="activity-item safe">
+              <div class="activity-icon">✓</div>
+              <div class="activity-content">
+                <div class="activity-title">Transaction Verified</div>
+                <div class="activity-time">2 minutes ago</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="quick-actions">
+          <button class="action-btn primary" id="scanPage">
+            <span class="btn-icon">🔍</span>
+            Scan Current Page
+          </button>
+          <button class="action-btn secondary" id="viewSettings">
+            <span class="btn-icon">⚙️</span>
+            Settings
+          </button>
+        </div>
+      </main>
+
+      <footer class="popup-footer">
+        <div class="footer-links">
+          <a href="#" class="footer-link" id="reportThreat">Report Threat</a>
+          <a href="#" class="footer-link" id="learnMore">Learn More</a>
+        </div>
+      </footer>
+    </div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
