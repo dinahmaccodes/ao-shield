@@ -93,10 +93,19 @@ const TopNav: React.FC = () => {
 const GetExtensionButton: React.FC<{ className?: string }> = ({
   className,
 }) => {
+  const handleGetExtension = () => {
+    // Dummy Chrome Web Store link - replace with actual extension URL when ready
+    window.open(
+      "https://chrome.google.com/webstore/category/extensions",
+      "_blank"
+    );
+  };
+
   return (
     <button
       className={`get-extension-btn ${className ?? ""}`}
       aria-label="Get Extension"
+      onClick={handleGetExtension}
     >
       Get Extension
     </button>
@@ -356,7 +365,7 @@ const Footer: React.FC = () => {
         <div className="flex items-center gap-3 footer-logo-section">
           <img src="/footer-aoshield.svg" alt="aoshield-logo" />
         </div>
-        <nav className="justify-center gap-6 text-sm text-white/70 sm:flex">
+        <nav className="justify-center gap-6 text-lg text-white/70 sm:flex">
           <a
             href="#features"
             className="hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/60 rounded"
