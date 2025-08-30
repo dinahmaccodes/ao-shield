@@ -1,0 +1,9 @@
+[submodule "workspace/foundry-fund-me-25/lib/forge-std"]
+	path = workspace/foundry-fund-me-25/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
+[submodule "workspace/foundry-fund-me-25/lib/chainlink-brownie-contracts"]
+	path = workspace/foundry-fund-me-25/lib/chainlink-brownie-contracts
+	url = https://github.com/smartcontractkit/chainlink-brownie-contracts
+[submodule "workspace/foundry-fund-me-25/lib/foundry-devops"]
+	path = workspace/foundry-fund-me-25/lib/foundry-devops
+	url = https://github.com/cyfrin/foundry-devops
