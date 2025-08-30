@@ -93,12 +93,20 @@ const TopNav: React.FC = () => {
 const GetExtensionButton: React.FC<{ className?: string }> = ({
   className,
 }) => {
+  const handleGetExtension = () => {
+    // Dummy Chrome Web Store link - replace with actual extension URL when ready
+    window.open(
+      "https://chrome.google.com/webstore/category/extensions",
+      "_blank"
+    );
+  };
   return (
     <button
       className={`get-extension-btn ${className ?? ""}`}
       aria-label="Get Extension"
+      onClick={handleGetExtension}
     >
-      Get Extension
+        Get Extension
     </button>
   );
 };

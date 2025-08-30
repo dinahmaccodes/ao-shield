@@ -654,7 +654,7 @@
   /* Footer typography fixes */
   .footer-copyright-text {
     font-family: Inter, sans-serif;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 400;
     color: rgba(245, 245, 247, 0.6);
     margin-top: 1.5rem;
@@ -689,7 +689,7 @@
   /* Footer navigation links styling */
   footer nav a {
     font-family: Inter, sans-serif;
-    font-size: 14px;
+    font-size: 18px;
     font-weight: 400;
   }
 
