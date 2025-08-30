@@ -1,0 +1,17 @@
+# Note: For a production extension, you would need actual PNG icon files
+# These would typically be created using image editing software
+# For now, we'll create placeholder text files that indicate what icons are needed
+
+# Icon sizes needed for Chrome extension:
+# - icon16.png (16x16) - Extension toolbar icon
+# - icon32.png (32x32) - Extension management page
+# - icon48.png (48x48) - Extension management page and options
+# - icon128.png (128x128) - Chrome Web Store and installation
+
+# For development testing, you can use any PNG files with these names
+# or convert the Shield.svg to PNG format using online converters or tools like:
+# - Inkscape: inkscape --export-png=icon128.png --export-width=128 --export-height=128 Shield.svg
+# - ImageMagick: convert Shield.svg -resize 128x128 icon128.png
+# - Online converters: https://cloudconvert.com/svg-to-png
+
+echo "PNG icons needed for extension - convert Shield.svg to PNG format"

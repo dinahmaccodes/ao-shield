@@ -1,0 +1,32 @@
+{
+  "name": "ao-shield-extension",
+  "version": "1.0.0",
+  "description": "AI-powered blockchain security extension that protects transactions from scams and malicious actors",
+  "scripts": {
+    "build": "echo 'Extension is ready - no build step needed'",
+    "dev": "echo 'Load extension in Chrome developer mode'",
+    "zip": "zip -r ao-shield-extension.zip . -x '*.git*' 'node_modules/*' '*.DS_Store' 'package*.json'",
+    "test": "echo 'No tests configured yet'"
+  },
+  "keywords": [
+    "blockchain",
+    "security",
+    "web3",
+    "ethereum",
+    "arweave",
+    "chrome-extension",
+    "fraud-detection",
+    "transaction-security"
+  ],
+  "author": "AO Shield Team",
+  "license": "MIT",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dinahmaccodes/ao-shield"
+  },
+  "bugs": {
+    "url": "https://github.com/dinahmaccodes/ao-shield/issues"
+  },
+  "homepage": "https://github.com/dinahmaccodes/ao-shield#readme"
+}
