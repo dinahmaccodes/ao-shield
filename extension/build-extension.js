@@ -36,15 +36,12 @@ const iconsToCopy = [
   "icons/icon128.png",
 ];
 
-console.log("🚀 Building AO Shield Extension...");
-
 // Copy main files
 filesToCopy.forEach((file) => {
   try {
     copyFileSync(resolve(__dirname, file), resolve(distDir, file));
-    console.log(`✅ Copied ${file}`);
   } catch (error) {
-    console.error(`❌ Failed to copy ${file}:`, error.message);
+    console.error(`Failed to copy ${file}:`, error.message);
   }
 });
 
@@ -52,9 +49,8 @@ filesToCopy.forEach((file) => {
 iconsToCopy.forEach((icon) => {
   try {
     copyFileSync(resolve(__dirname, icon), resolve(distDir, icon));
-    console.log(`✅ Copied ${icon}`);
   } catch (error) {
-    console.error(`❌ Failed to copy ${icon}:`, error.message);
+    console.error(`Failed to copy ${icon}:`, error.message);
   }
 });
 
@@ -65,12 +61,7 @@ try {
 
   if (existsSync(indexHtmlPath)) {
     copyFileSync(indexHtmlPath, popupHtmlPath);
-    console.log("✅ Renamed index.html to popup.html");
   }
 } catch (error) {
-  console.error("❌ Failed to rename index.html to popup.html:", error.message);
+  console.error("Failed to rename index.html to popup.html:", error.message);
 }
-
-console.log("🎉 Extension build complete!");
-console.log("📁 Files are ready in ./dist folder");
-console.log("🔧 Load the extension in Chrome from the dist folder");
