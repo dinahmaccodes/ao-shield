@@ -1,0 +1,43 @@
+root: ./
+
+structure:
+  readme: README.md
+  summary: SUMMARY.md
+
+gitbook:
+  version: "3.2.3"
+  plugins:
+    - search
+    - highlight
+    - sharing
+    - fontsettings
+    - livereload
+    - expandable-chapters
+    - copy-code-button
+    - back-to-top-button
+    - github
+    - edit-link
+
+pluginsConfig:
+  github:
+    url: https://github.com/your-repo/ao-shield
+  edit-link:
+    base: https://github.com/your-repo/ao-shield/edit/main/docs
+    label: Edit this page
+  sharing:
+    facebook: true
+    google: true
+    hatena: true
+    instapaper: true
+    line: true
+    linkedin: true
+    pinterest: true
+    pocket: true
+    qq: true
+    qzone: true
+    reddit: true
+    skype: true
+    twitter: true
+    weibo: true
+    whatsapp: true
+    all: ['facebook', 'google', 'twitter', 'weibo', 'instapaper', 'linkedin', 'pocket']
