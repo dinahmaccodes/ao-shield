@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { Settings as SettingsIcon, Wallet, ExternalLink } from 'lucide-react';
-import { motion } from 'framer-motion';
-import Card from '../components/Card';
+import React, { useState } from "react";
+import { Settings as SettingsIcon, Wallet, ExternalLink } from "lucide-react";
+import { motion } from "framer-motion";
+import Card from "../components/Card";
 
 const Settings: React.FC = () => {
   const [settings, setSettings] = useState({
@@ -9,19 +9,25 @@ const Settings: React.FC = () => {
     aiAgent: true,
     autoConnection: true,
     blockchainMonitor: true,
-    sound: false
+    sound: false,
   });
 
   const toggleSetting = (key: string) => {
-    setSettings(prev => ({ ...prev, [key]: !prev[key] }));
+    setSettings((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
-  const Toggle = ({ enabled, onChange }: { enabled: boolean; onChange: () => void }) => (
+  const Toggle = ({
+    enabled,
+    onChange,
+  }: {
+    enabled: boolean;
+    onChange: () => void;
+  }) => (
     <motion.button
       whileTap={{ scale: 0.95 }}
       onClick={onChange}
       className={`relative w-12 h-6 rounded-full transition-all ${
-        enabled ? 'bg-cyan-500' : 'bg-gray-600'
+        enabled ? "bg-cyan-500" : "bg-gray-600"
       }`}
     >
       <motion.div
@@ -91,13 +97,16 @@ const Settings: React.FC = () => {
               <h3 className="font-medium mb-4">Other actions</h3>
               <div className="space-y-4">
                 {[
-                  { key: 'aiAgent', label: 'AI Agent' },
-                  { key: 'autoConnection', label: 'Arweave Connection' },
-                  { key: 'blockchainMonitor', label: 'Blockchain monitor' },
-                  { key: 'notifications', label: 'Notifications' },
-                  { key: 'sound', label: 'Sound' }
+                  { key: "aiAgent", label: "AI Agent" },
+                  { key: "autoConnection", label: "Arweave Connection" },
+                  { key: "blockchainMonitor", label: "Blockchain monitor" },
+                  { key: "notifications", label: "Notifications" },
+                  { key: "sound", label: "Sound" },
                 ].map((item) => (
-                  <div key={item.key} className="flex items-center justify-between">
+                  <div
+                    key={item.key}
+                    className="flex items-center justify-between"
+                  >
                     <span className="text-sm">{item.label}</span>
                     <Toggle
                       enabled={settings[item.key as keyof typeof settings]}
@@ -112,13 +121,15 @@ const Settings: React.FC = () => {
             <Card hover={false}>
               <div className="text-center py-4">
                 <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <img 
-                    src="/src/assets/images/aologo.svg" 
-                    alt="AO Shield" 
+                  <img
+                    src="/assets/images/shieldwarning.svg"
+                    alt="AO Shield"
                     className="w-8 h-8"
                   />
                 </div>
-                <p className="text-red-400 text-sm mb-2">You are not registered with the extension</p>
+                <p className="text-red-400 text-sm mb-2">
+                  You are not registered with the extension
+                </p>
                 <p className="text-gray-400 text-xs">
                   Create an account to sync your settings across devices
                 </p>

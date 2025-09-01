@@ -6,7 +6,7 @@ AO Shield is an **AO-native Fraud Prevention AI Agent** that protects users from
 
 ## Problem Statement
 
-Users interacting with dApps on AO face:
+Users interacting with dApps on AO:
 - **Phishing sites** and malicious smart contracts
 - **Accidental wallet drains** and transaction fraud
 - **EOA vulnerability** due to irreversible network broadcasts

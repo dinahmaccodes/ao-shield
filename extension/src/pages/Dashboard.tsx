@@ -1,7 +1,7 @@
-import React from 'react';
-import { AlertTriangle, TrendingUp, Shield, Eye } from 'lucide-react';
-import { motion } from 'framer-motion';
-import Card from '../components/Card';
+import React from "react";
+import { AlertTriangle, TrendingUp, Shield, Eye } from "lucide-react";
+import { motion } from "framer-motion";
+import Card from "../components/Card";
 
 interface DashboardProps {
   alert: any;
@@ -10,9 +10,19 @@ interface DashboardProps {
 
 const Dashboard: React.FC<DashboardProps> = ({ alert, onBack }) => {
   const stats = [
-    { label: 'Threats Blocked', value: '247', icon: Shield, color: 'text-green-400' },
-    { label: 'Active Sessions', value: '3', icon: Eye, color: 'text-blue-400' },
-    { label: 'Risk Score', value: `${alert?.riskScore || 98}%`, icon: TrendingUp, color: 'text-red-400' },
+    {
+      label: "Threats Blocked",
+      value: "247",
+      icon: Shield,
+      color: "text-green-400",
+    },
+    { label: "Active Sessions", value: "3", icon: Eye, color: "text-blue-400" },
+    {
+      label: "Risk Score",
+      value: `${alert?.riskScore || 98}%`,
+      icon: TrendingUp,
+      color: "text-red-400",
+    },
   ];
 
   return (
@@ -28,9 +38,15 @@ const Dashboard: React.FC<DashboardProps> = ({ alert, onBack }) => {
             <Card hover={false}>
               <div className="text-center mb-4">
                 <div className="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <AlertTriangle size={32} className="text-red-400" />
+                  <img
+                    src="/assets/images/10secondtimer.svg"
+                    alt="Warning Timer"
+                    className="w-8 h-8"
+                  />
                 </div>
-                <h2 className="text-xl font-semibold mb-1">{alert?.title || 'Fraud Alert'}</h2>
+                <h2 className="text-xl font-semibold mb-1">
+                  {alert?.title || "Fraud Alert"}
+                </h2>
                 <span className="text-xs px-3 py-1 bg-red-500/20 text-red-400 rounded-full">
                   {alert?.riskScore || 98}%
                 </span>
@@ -39,21 +55,25 @@ const Dashboard: React.FC<DashboardProps> = ({ alert, onBack }) => {
               <div className="space-y-3 text-sm">
                 <div className="flex justify-between">
                   <span className="text-gray-400">Amount:</span>
-                  <span>{alert?.amount || '0.5 ETH'}</span>
+                  <span>{alert?.amount || "0.5 ETH"}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-400">To:</span>
-                  <span className="font-mono">{alert?.to || '0x4343...bcc'}</span>
+                  <span className="font-mono">
+                    {alert?.to || "0x4343...bcc"}
+                  </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-400">Risk Score:</span>
-                  <span className="text-red-400">{alert?.riskScore || 98}%</span>
+                  <span className="text-red-400">
+                    {alert?.riskScore || 98}%
+                  </span>
                 </div>
               </div>
 
               <div className="mt-4 p-3 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
                 <p className="text-yellow-400 text-xs">
-                  ⚠ Address matches 20 scam reports
+                  ⚠️ Address matches 20 scam reports
                 </p>
               </div>
             </Card>
@@ -70,7 +90,10 @@ const Dashboard: React.FC<DashboardProps> = ({ alert, onBack }) => {
                     transition={{ delay: index * 0.1 }}
                   >
                     <Card hover={false} className="text-center p-3">
-                      <Icon size={20} className={`mx-auto mb-2 ${stat.color}`} />
+                      <Icon
+                        size={20}
+                        className={`mx-auto mb-2 ${stat.color}`}
+                      />
                       <div className="text-lg font-bold">{stat.value}</div>
                       <div className="text-xs text-gray-400">{stat.label}</div>
                     </Card>
@@ -79,11 +102,18 @@ const Dashboard: React.FC<DashboardProps> = ({ alert, onBack }) => {
               })}
             </div>
 
-            {/* Chart Placeholder */}
+            {/* Risk Analysis */}
             <Card hover={false}>
-              <h3 className="font-medium mb-3">Risk Analysis</h3>
-              <div className="h-24 bg-gradient-to-r from-red-500/20 to-orange-500/20 rounded-lg flex items-center justify-center">
-                <span className="text-gray-400 text-sm">Risk Chart Visualization</span>
+              <h3 className="font-medium mb-3 text-gray-400">
+                Why this is risky:
+              </h3>
+              <div className="space-y-2">
+                <div className="flex items-start gap-2">
+                  <div className="w-1 h-1 bg-gray-400 rounded-full mt-2 flex-shrink-0"></div>
+                  <span className="text-sm text-gray-300">
+                    Address matches 12 drain reports
+                  </span>
+                </div>
               </div>
             </Card>
 
