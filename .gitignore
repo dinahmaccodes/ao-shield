@@ -23,6 +23,7 @@ build
 .cache
 .parcel-cache
 .vite
+.turbo
 
 # Environment variables
 .env
@@ -79,5 +80,59 @@ Desktop.ini
 *.tmp
 *.temp
 
-
+# Project specific
 /extension-x/
+
+# Extension specific builds and artifacts
+extension/dist/
+extension/.vscode/settings.json
+
+# Frontend specific builds
+frontend/dist/
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Next.js (if used in future)
+.next/
+out/
+
+# Vite cache
+.vite/
+
+# ESLint cache
+.eslintcache
+
+# Tailwind CSS generated files
+# (keeping config files but ignoring any generated CSS)
+
+# Browser extension artifacts
+*.crx
+*.pem
+extension.zip
+
+# Development tools
+.devcontainer/
+
+# Testing
+coverage/
+.nyc_output
+.jest
+
+# Documentation builds
+docs/dist/
+docs/.vitepress/dist/
+docs/node_modules/
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# Local development
+.local
+local.properties
+
+# IDE specific
+.fleet/
+.vscode/settings.json

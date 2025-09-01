@@ -43,11 +43,23 @@ npm run dev
 npm run build
 ```
 
-4. Load extension in Chrome:
-   - Open Chrome Extensions (chrome://extensions/)
-   - Enable Developer mode
-   - Click "Load unpacked"
-   - Select the `dist` folder
+### Development Workflow
+
+⚠️ **Important**: The browser extension ONLY reads from the `dist/` folder, not `src/`
+
+1. Make changes in `src/` directory
+2. Run `npm run build` to compile
+3. Reload extension in Chrome
+4. Test your changes
+
+### Key Development Notes
+
+- **Asset Handling**: Place images in `public/assets/images/` and reference as `/assets/images/filename.svg`
+- **Always Build**: Run `npm run build` after making any changes
+- **Load Dist**: Always load the `dist/` folder in Chrome, not `src/`
+- **Reload Extension**: Reload extension in Chrome after each build
+
+For comprehensive development documentation, see [DEVGUIDE.md](../DEVGUIDE.md)
 
 ### Project Structure
 
