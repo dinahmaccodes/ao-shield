@@ -36,7 +36,7 @@ AO Shield is a **hybrid security system** that combines:
 
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Browser       │    │   AO Agents     │    │   LLM     │
+│   Browser       │    │   AO Agents     │    │       LLM       │
 │   Extension     │◄──►│   (Arweave)     │◄──►│   (Inference)   │
 │                 │    │                 │    │                 │
 │ • Real-time     │    │ • Coordination  │    │ • Deep Analysis │
@@ -127,7 +127,7 @@ Comprehensive documentation is available in the [docs/](docs/) folder:
 
 ## Contact Us
 
-- **Twitter/X**: [Discord](https://x.com/_AOshield)
+- **Twitter/X**: [X](https://x.com/_AOshield)
 - **Discord**: [Discord](https://discord.gg/39N5hGaU)
 
 
