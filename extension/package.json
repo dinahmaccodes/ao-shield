@@ -10,6 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@arweave-wallet-kit/browser-wallet-strategy": "^0.1.1",
+    "@arweave-wallet-kit/othent-strategy": "^0.1.1",
+    "@arweave-wallet-kit/react": "^0.3.2",
+    "@arweave-wallet-kit/wander-strategy": "^0.1.2",
+    "@arweave-wallet-kit/webwallet-strategy": "^0.0.1-beta.4",
     "framer-motion": "^12.23.12",
     "lucide-react": "^0.263.1",
     "react": "^18.2.0",

@@ -7,19 +7,21 @@ import Alerts from "./pages/Alerts";
 import Dashboard from "./pages/Dashboard";
 import History from "./pages/History";
 import Settings from "./pages/Settings";
+import { WalletProvider } from "./providers/WalletProvider";
+import { useConnection } from "@arweave-wallet-kit/react";
 
-function App() {
-  const [isWalletConnected, setIsWalletConnected] = useState(false);
+// Component that uses wallet connection inside the provider
+const AppContent = () => {
+  const { connected } = useConnection();
   const [activePage, setActivePage] = useState("alerts");
   const [selectedAlert, setSelectedAlert] = useState(null);
 
   const handleConnectWallet = () => {
-    setIsWalletConnected(true);
     setActivePage("alerts");
   };
 
   const renderPage = () => {
-    if (!isWalletConnected) {
+    if (!connected) {
       return <ConnectWallet onConnect={handleConnectWallet} />;
     }
 
@@ -46,7 +48,7 @@ function App() {
 
   return (
     <div className="w-[380px] h-[500px] bg-[#0A0A0A] text-white flex flex-col font-sans overflow-hidden">
-      {isWalletConnected && (
+      {connected && (
         <Header
           showBackButton={!!selectedAlert}
           onBack={() => setSelectedAlert(null)}
@@ -57,7 +59,7 @@ function App() {
         <AnimatePresence mode="wait">
           <motion.div
             key={
-              !isWalletConnected
+              !connected
                 ? "connect"
                 : selectedAlert
                 ? "dashboard"
@@ -74,10 +76,18 @@ function App() {
         </AnimatePresence>
       </div>
 
-      {isWalletConnected && !selectedAlert && (
+      {connected && !selectedAlert && (
         <Navbar activePage={activePage} setActivePage={setActivePage} />
       )}
     </div>
+  );
+};
+
+function App() {
+  return (
+    <WalletProvider>
+      <AppContent />
+    </WalletProvider>
   );
 }
 
