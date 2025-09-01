@@ -1,11 +1,24 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { useConnection } from "@arweave-wallet-kit/react";
 
 interface ConnectWalletProps {
   onConnect: () => void;
 }
 
 const ConnectWallet = ({ onConnect }: ConnectWalletProps) => {
+  const { connect, connected } = useConnection();
+
+  const handleConnect = async () => {
+    try {
+      await connect();
+      if (connected) {
+        onConnect();
+      }
+    } catch (error) {
+      console.error("Failed to connect wallet:", error);
+    }
+  };
   return (
     <div className="h-full flex flex-col items-center justify-center p-8 text-center overflow-y-auto custom-scrollbar">
       <motion.div
@@ -47,7 +60,7 @@ const ConnectWallet = ({ onConnect }: ConnectWalletProps) => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 0.5 }}
           className="cursor-pointer"
-          onClick={onConnect}
+          onClick={handleConnect}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
