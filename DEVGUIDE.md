@@ -44,13 +44,13 @@ npm run build
 
 ### 1. Making Changes to the Extension
 
-#### File Structure Understanding:
+#### File Structure Understanding
 
 - **`src/`** - Your development code (React, TypeScript)
 - **`public/`** - Static assets (images, manifest)
 - **`dist/`** - Built extension that browser reads
 
-#### Important Concept:
+#### Important Concept
 
 🚨 **The browser extension ONLY reads from the `dist/` folder, NOT `src/`**
 
@@ -74,7 +74,7 @@ cd extension/
 - **Reference in code**: Use path `/assets/images/filename.svg`
 - **Why**: Files in `public/` get copied directly to `dist/`
 
-#### Step 3: Build the Extension | Very Important!
+#### Step 3: Build the Extension | Very Important
 
 ```bash
 npm run build

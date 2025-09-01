@@ -12,6 +12,16 @@ body {
   height: 500px;
 }
 
+/* When opened in a tab, allow expansion */
+@media (min-width: 600px) {
+  #root {
+    width: 100vw;
+    height: 100vh;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+}
+
 /* Custom subtle scrollbar */
 .custom-scrollbar {
   scrollbar-width: thin;
@@ -57,4 +67,9 @@ body {
 
 .feature-icon:hover {
   transform: rotate(15deg);
+}
+
+/* Custom font sizes */
+.text-21 {
+  font-size: 21px;
 }

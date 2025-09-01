@@ -28,20 +28,20 @@ const Navbar: React.FC<NavbarProps> = ({ activePage, setActivePage }) => {
               whileTap={{ scale: 0.95 }}
               onClick={() => setActivePage(item.id)}
               className={`flex flex-col items-center gap-1 p-2 rounded-lg transition-all ${
-                isActive
-                  ? "text-cyan-400 bg-cyan-500/10"
-                  : "text-gray-500 hover:text-gray-300 hover:bg-white/5"
+              isActive
+                ? "text-gray-500 bg-white/10"
+                : "text-gray-500 hover:text-white hover:bg-white/5"
               }`}
             >
               <Icon size={18} />
               <span className="text-xs">{item.label}</span>
               {isActive && (
-                <motion.div
-                  layoutId="activeTab"
-                  className="w-full h-0.5 bg-cyan-400 rounded-full mt-1"
-                  initial={false}
-                  transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                />
+              <motion.div
+                layoutId="activeTab"
+                className="w-full h-0.5 bg-white rounded-full mt-1"
+                initial={false}
+                transition={{ type: "spring", stiffness: 500, damping: 30 }}
+              />
               )}
             </motion.button>
           );
