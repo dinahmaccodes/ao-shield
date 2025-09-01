@@ -1,7 +1,7 @@
-import React from 'react';
-import { AlertTriangle, Shield, ChevronRight } from 'lucide-react';
-import { motion } from 'framer-motion';
-import Card from '../components/Card';
+import React from "react";
+import { AlertTriangle, Shield, ChevronRight } from "lucide-react";
+import { motion } from "framer-motion";
+import Card from "../components/Card";
 
 interface AlertsProps {
   onViewDashboard: (alert: any) => void;
@@ -11,62 +11,66 @@ const Alerts: React.FC<AlertsProps> = ({ onViewDashboard }) => {
   const alerts = [
     {
       id: 1,
-      title: 'Fraud Alert',
-      riskLevel: 'High',
-      message: 'Suspicious transaction detected',
-      amount: '0.5 ETH',
-      to: '0x4343...bcc',
+      title: "Fraud Alert",
+      riskLevel: "High",
+      message: "Suspicious transaction detected",
+      amount: "0.5 ETH",
+      to: "0x4343...bcc",
       riskScore: 98,
-      color: 'red'
+      color: "red",
     },
     {
       id: 2,
-      title: 'Security Alert',
-      riskLevel: 'Medium',
-      message: 'Unusual wallet activity',
-      amount: '0.2 ETH',
-      to: '0x7432...def',
+      title: "Security Alert",
+      riskLevel: "Medium",
+      message: "Unusual wallet activity",
+      amount: "0.2 ETH",
+      to: "0x7432...def",
       riskScore: 65,
-      color: 'yellow'
+      color: "yellow",
     },
     {
       id: 3,
-      title: 'Security Alert',
-      riskLevel: 'Low',
-      message: 'New contract interaction',
-      amount: '0.1 ETH',
-      to: '0x9876...abc',
+      title: "Security Alert",
+      riskLevel: "Low",
+      message: "New contract interaction",
+      amount: "0.1 ETH",
+      to: "0x9876...abc",
       riskScore: 25,
-      color: 'green'
+      color: "green",
     },
     {
       id: 4,
-      title: 'Security Alert',
-      riskLevel: 'Medium',
-      message: 'Unknown token approval',
-      amount: '0.3 ETH',
-      to: '0x1234...xyz',
+      title: "Security Alert",
+      riskLevel: "Medium",
+      message: "Unknown token approval",
+      amount: "0.3 ETH",
+      to: "0x1234...xyz",
       riskScore: 72,
-      color: 'yellow'
+      color: "yellow",
     },
     {
       id: 5,
-      title: 'Security Alert',
-      riskLevel: 'Low',
-      message: 'Standard DeFi interaction',
-      amount: '0.05 ETH',
-      to: '0x5678...def',
+      title: "Security Alert",
+      riskLevel: "Low",
+      message: "Standard DeFi interaction",
+      amount: "0.05 ETH",
+      to: "0x5678...def",
       riskScore: 15,
-      color: 'green'
-    }
+      color: "green",
+    },
   ];
 
   const getRiskColor = (level: string) => {
     switch (level) {
-      case 'High': return 'text-red-400 bg-red-400/10';
-      case 'Medium': return 'text-yellow-400 bg-yellow-400/10';
-      case 'Low': return 'text-green-400 bg-green-400/10';
-      default: return 'text-gray-400 bg-gray-400/10';
+      case "High":
+        return "text-red-400 bg-red-400/10";
+      case "Medium":
+        return "text-yellow-400 bg-yellow-400/10";
+      case "Low":
+        return "text-green-400 bg-green-400/10";
+      default:
+        return "text-gray-400 bg-gray-400/10";
     }
   };
 
@@ -110,11 +114,17 @@ const Alerts: React.FC<AlertsProps> = ({ onViewDashboard }) => {
                       <div className="flex items-center gap-2 mb-2">
                         <AlertTriangle size={16} className="text-red-400" />
                         <h3 className="font-medium">{alert.title}</h3>
-                        <span className={`text-xs px-2 py-1 rounded-full ${getRiskColor(alert.riskLevel)}`}>
+                        <span
+                          className={`text-xs px-2 py-1 rounded-full ${getRiskColor(
+                            alert.riskLevel
+                          )}`}
+                        >
                           {alert.riskLevel}
                         </span>
                       </div>
-                      <p className="text-sm text-gray-400 mb-2">{alert.message}</p>
+                      <p className="text-sm text-gray-400 mb-2">
+                        {alert.message}
+                      </p>
                       <div className="text-xs text-gray-500">
                         <div>Amount: {alert.amount}</div>
                         <div>To: {alert.to}</div>
@@ -137,7 +147,7 @@ const Alerts: React.FC<AlertsProps> = ({ onViewDashboard }) => {
               onClick={() => onViewDashboard(alerts[0])}
               className="w-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white py-3 rounded-xl font-medium transition-all transform hover:scale-[1.02] active:scale-[0.98]"
             >
-              View Dashboard
+              View Threats
             </button>
           </motion.div>
         </div>

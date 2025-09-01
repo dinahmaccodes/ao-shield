@@ -1,6 +1,6 @@
-import React from 'react';
-import { ArrowLeft, Shield, ExternalLink } from 'lucide-react';
-import { motion } from 'framer-motion';
+import React from "react";
+import { ArrowLeft, Shield, ExternalLink } from "lucide-react";
+import { motion } from "framer-motion";
 
 interface HeaderProps {
   showBackButton?: boolean;
@@ -11,8 +11,12 @@ const Header: React.FC<HeaderProps> = ({ showBackButton, onBack }) => {
   const handleOpenFullView = () => {
     try {
       // Try to open as browser extension
-      if (typeof chrome !== 'undefined' && chrome.runtime) {
-        window.open(chrome.runtime.getURL("index.html"), "_blank", "width=900,height=700");
+      if (typeof chrome !== "undefined" && chrome.runtime) {
+        window.open(
+          chrome.runtime.getURL("index.html"),
+          "_blank",
+          "width=900,height=700"
+        );
       } else {
         // Fallback for development
         console.log("Open full view");
@@ -37,16 +41,16 @@ const Header: React.FC<HeaderProps> = ({ showBackButton, onBack }) => {
           </motion.button>
         ) : (
           <div className="flex items-center gap-2">
-            <img 
-              src="/src/assets/images/aologo.svg" 
-              alt="AO Shield" 
+            <img
+              src="/assets/images/aologo.svg"
+              alt="AO Shield"
               className="w-6 h-6"
             />
             <span className="text-lg font-semibold">AO Shield</span>
           </div>
         )}
       </div>
-      
+
       <div className="flex items-center gap-3">
         <div className="flex items-center gap-2">
           <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
@@ -54,7 +58,7 @@ const Header: React.FC<HeaderProps> = ({ showBackButton, onBack }) => {
             Protected
           </span>
         </div>
-        
+
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
@@ -62,7 +66,10 @@ const Header: React.FC<HeaderProps> = ({ showBackButton, onBack }) => {
           className="p-2 rounded-lg hover:bg-white/10 transition-colors group"
           title="Open Full View"
         >
-          <ExternalLink size={16} className="text-gray-400 group-hover:text-cyan-400 transition-colors" />
+          <ExternalLink
+            size={16}
+            className="text-gray-400 group-hover:text-cyan-400 transition-colors"
+          />
         </motion.button>
       </div>
     </div>

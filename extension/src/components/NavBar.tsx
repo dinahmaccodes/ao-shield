@@ -15,7 +15,7 @@ const Navbar: React.FC<NavbarProps> = ({ activePage, setActivePage }) => {
   ];
 
   return (
-    <div className="border-t border-white/10 bg-[#111] p-2">
+    <div className="border-t border-white/5 bg-[#0A0A0A] p-2">
       <div className="flex justify-around">
         {navItems.map((item) => {
           const Icon = item.icon;
@@ -29,16 +29,16 @@ const Navbar: React.FC<NavbarProps> = ({ activePage, setActivePage }) => {
               onClick={() => setActivePage(item.id)}
               className={`flex flex-col items-center gap-1 p-2 rounded-lg transition-all ${
                 isActive
-                  ? "text-white bg-white/10 shadow-lg"
-                  : "text-gray-400 hover:text-white hover:bg-white/5"
+                  ? "text-cyan-400 bg-cyan-500/10"
+                  : "text-gray-500 hover:text-gray-300 hover:bg-white/5"
               }`}
             >
-              <Icon size={20} />
+              <Icon size={18} />
               <span className="text-xs">{item.label}</span>
               {isActive && (
                 <motion.div
                   layoutId="activeTab"
-                  className="w-full h-0.5 bg-accent rounded-full mt-1"
+                  className="w-full h-0.5 bg-cyan-400 rounded-full mt-1"
                   initial={false}
                   transition={{ type: "spring", stiffness: 500, damping: 30 }}
                 />
