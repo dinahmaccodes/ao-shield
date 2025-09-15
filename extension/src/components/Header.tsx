@@ -33,9 +33,10 @@ const Header: React.FC<HeaderProps> = ({ showBackButton, onBack }) => {
       </div>
 
       <div className="flex items-center gap-3">
+        {/* Status Indicator */}
         <div className="flex items-center gap-2">
-          <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-          <span className="text-xs text-gray-400 bg-gray-800 px-2 py-1 rounded-full">
+          <div className="w-2 h-2 rounded-full animate-pulse bg-green-400"></div>
+          <span className="text-xs px-2 py-1 rounded-full text-gray-400 bg-gray-800">
             Protected
           </span>
         </div>

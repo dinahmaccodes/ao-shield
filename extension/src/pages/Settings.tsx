@@ -1,5 +1,8 @@
 import React, { useState } from "react";
-import { Settings as SettingsIcon, Wallet, ExternalLink } from "lucide-react";
+import {
+  Settings as SettingsIcon,
+  /* Wallet, */ ExternalLink,
+} from "lucide-react";
 import { motion } from "framer-motion";
 import Card from "../components/Card";
 
@@ -52,7 +55,7 @@ const Settings: React.FC = () => {
             animate={{ opacity: 1 }}
             className="space-y-4"
           >
-            {/* Wallet Stats */}
+            {/* Wallet Stats - Commented out until wallet integration is ready 
             <Card hover={false}>
               <h3 className="font-medium mb-3 flex items-center gap-2">
                 <Wallet size={16} />
@@ -91,6 +94,7 @@ const Settings: React.FC = () => {
                 </div>
               </div>
             </Card>
+            */}
 
             {/* Settings Options */}
             <Card hover={false}>

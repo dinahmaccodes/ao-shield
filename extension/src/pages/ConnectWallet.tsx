@@ -1,20 +1,19 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { useConnection } from "@arweave-wallet-kit/react";
+// import { useConnection } from "@arweave-wallet-kit/react";
 
 interface ConnectWalletProps {
   onConnect: () => void;
 }
 
 const ConnectWallet = ({ onConnect }: ConnectWalletProps) => {
-  const { connect, connected } = useConnection();
+  // const { connect, connected } = useConnection();
 
   const handleConnect = async () => {
     try {
-      await connect();
-      if (connected) {
-        onConnect();
-      }
+      // TODO: Implement actual wallet connection logic
+      console.log("Connect wallet clicked - implement actual connection");
+      onConnect(); // For now, just proceed to the main app
     } catch (error) {
       console.error("Failed to connect wallet:", error);
     }

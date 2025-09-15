@@ -8,58 +8,11 @@ interface AlertsProps {
 }
 
 const Alerts: React.FC<AlertsProps> = ({ onViewDashboard }) => {
-  const alerts = [
-    {
-      id: 1,
-      title: "Fraud Alert",
-      riskLevel: "High",
-      message: "Suspicious transaction detected",
-      amount: "0.5 ETH",
-      to: "0x4343...bcc",
-      riskScore: 98,
-      color: "red",
-    },
-    {
-      id: 2,
-      title: "Security Alert",
-      riskLevel: "Medium",
-      message: "Unusual wallet activity",
-      amount: "0.2 ETH",
-      to: "0x7432...def",
-      riskScore: 65,
-      color: "yellow",
-    },
-    {
-      id: 3,
-      title: "Security Alert",
-      riskLevel: "Low",
-      message: "New contract interaction",
-      amount: "0.1 ETH",
-      to: "0x9876...abc",
-      riskScore: 25,
-      color: "green",
-    },
-    {
-      id: 4,
-      title: "Security Alert",
-      riskLevel: "Medium",
-      message: "Unknown token approval",
-      amount: "0.3 ETH",
-      to: "0x1234...xyz",
-      riskScore: 72,
-      color: "yellow",
-    },
-    {
-      id: 5,
-      title: "Security Alert",
-      riskLevel: "Low",
-      message: "Standard DeFi interaction",
-      amount: "0.05 ETH",
-      to: "0x5678...def",
-      riskScore: 15,
-      color: "green",
-    },
-  ];
+  // Remove placeholder data - ready for real implementation
+  const alerts: any[] = [];
+
+  // TODO: Replace with real alert data from AO processes
+  // const alerts = await fetchAlertsFromAO();
 
   const getRiskColor = (level: string) => {
     switch (level) {
@@ -83,10 +36,15 @@ const Alerts: React.FC<AlertsProps> = ({ onViewDashboard }) => {
           className="text-center"
         >
           <Shield size={48} className="mx-auto mb-4 text-gray-500" />
-          <h3 className="text-lg font-medium mb-2">No active alerts yet.</h3>
+          <h3 className="text-lg font-medium mb-2">No alerts detected</h3>
           <p className="text-gray-400 text-sm">
-            Your wallet is secure and protected.
+            AO Shield is monitoring your transactions.
+            <br />
+            Real-time alerts will appear here when detected.
           </p>
+          <div className="mt-4 text-xs text-gray-500">
+            Ready for AO process integration
+          </div>
         </motion.div>
       </div>
     );

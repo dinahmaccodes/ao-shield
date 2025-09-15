@@ -14,5 +14,40 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    <script>
+      // Pin prevention script
+      (function () {
+        // Check if this is a pinned window
+        const urlParams = new URLSearchParams(window.location.search);
+        const isPinned = urlParams.get("pinned") === "true";
+
+        if (isPinned) {
+          console.log("Pinned window detected - setting up persistence");
+
+          // Prevent window from closing on blur
+          window.addEventListener("blur", function (e) {
+            // Don't allow the window to close due to blur
+            e.preventDefault();
+            return false;
+          });
+
+          // Keep the window active
+          let keepAliveInterval = setInterval(() => {
+            // Just a heartbeat to keep the window context alive
+            if (window.closed) {
+              clearInterval(keepAliveInterval);
+            }
+          }, 1000);
+
+          // Add visual indicator that this is pinned
+          document.addEventListener("DOMContentLoaded", function () {
+            document.title = "AO Shield (Pinned)";
+
+            // Add pinned class to body for styling
+            document.body.classList.add("ao-shield-pinned");
+          });
+        }
+      })();
+    </script>
   </body>
 </html>
