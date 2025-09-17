@@ -58,8 +58,8 @@ class AOShieldContent {
     async handleMessage(message, sender, sendResponse) {
         switch (message.action) {
             case 'checkThreats':
-                const threatCount = await this.scanForThreats();
-                sendResponse({ threats: threatCount });
+                await this.scanForThreats();
+                sendResponse({ threats: this.detectedThreats.length });
                 break;
             
             case 'getDetectedThreats':
@@ -84,14 +84,16 @@ class AOShieldContent {
         this.isScanning = true;
 
         try {
-            const threatCount = await this.scanForThreats();
+            await this.scanForThreats();
             
-            if (threatCount > 0) {
-                // Report threats to background script
-                chrome.runtime.sendMessage({
-                    action: 'threatDetected',
-                    details: `Detected ${threatCount} potential AO ecosystem threats on ${window.location.hostname}`
-                });
+            if (this.detectedThreats.length > 0) {
+                // Report each threat to the background script
+                for (const threat of this.detectedThreats) {
+                    chrome.runtime.sendMessage({
+                        action: 'threatDetected',
+                        details: threat // Send the full threat object
+                    });
+                }
             }
         } catch (error) {
             console.error('AO Shield scanning error:', error);
@@ -101,164 +103,107 @@ class AOShieldContent {
     }
 
     async scanForThreats() {
-        let threatCount = 0;
         this.detectedThreats = [];
 
-        // Scan page text content
-        threatCount += this.scanTextContent();
-        
-        // Scan script tags for AO-specific threats
-        threatCount += this.scanScriptTags();
-        
-        // Scan iframe sources
-        threatCount += this.scanIframes();
-        
-        // Scan for suspicious forms
-        threatCount += this.scanForms();
-        
-        // Scan for AO process interactions
-        threatCount += await this.scanAOProcesses();
-        
-        // Scan for Arweave transaction threats
-        threatCount += await this.scanArweaveTransactions();
-
-        return threatCount;
+        this.scanTextContent();
+        this.scanScriptTags();
+        this.scanIframes();
+        this.scanForms();
+        // The following are more complex and will be implemented fully later
+        // await this.scanAOProcesses();
+        // await this.scanArweaveTransactions();
     }
 
     scanTextContent() {
-        let threatCount = 0;
         const textContent = document.body ? document.body.innerText : '';
-        
+        if (!textContent) return;
+
         for (const pattern of this.threatPatterns) {
-            const matches = textContent.match(pattern);
-            if (matches) {
-                threatCount += matches.length;
-                this.detectedThreats.push({
-                    type: 'suspicious_text',
-                    pattern: pattern.toString(),
-                    matches: matches.length,
-                    ecosystem: 'ao'
-                });
+            if (pattern.test(textContent)) {
+                const threat = {
+                    id: `${Date.now()}-text-${pattern.toString()}`,
+                    title: 'Suspicious Text Detected',
+                    riskLevel: 'Medium',
+                    riskScore: 50,
+                    message: `Found text matching the malicious pattern: ${pattern.toString()}`,
+                    source: window.location.href,
+                    timestamp: Date.now(),
+                    type: 'Content',
+                    details: {
+                        pattern: pattern.toString(),
+                        content: textContent.substring(0, 200) + '...'
+                    },
+                };
+                this.detectedThreats.push(threat);
+                break; // Move to next pattern type after one match
             }
         }
-
-        return threatCount;
     }
 
     scanScriptTags() {
-        let threatCount = 0;
         const scripts = document.querySelectorAll('script');
         
-        scripts.forEach((script, index) => {
+        scripts.forEach((script) => {
             const scriptContent = script.innerHTML || script.src || '';
-            
-            // Check for AO-specific patterns
+            if (!scriptContent) return;
+
             for (const pattern of this.threatPatterns) {
                 if (pattern.test(scriptContent)) {
-                    threatCount++;
-                    this.detectedThreats.push({
-                        type: 'suspicious_script',
-                        element: `script[${index}]`,
-                        content: scriptContent.substring(0, 100) + '...',
-                        ecosystem: 'ao'
-                    });
+                    const threat = {
+                        id: `${Date.now()}-script-${pattern.toString()}`,
+                        title: 'Suspicious Script Detected',
+                        riskLevel: 'High',
+                        riskScore: 90,
+                        message: `A script on this page matches a known malicious pattern: ${pattern.toString()}`,
+                        source: window.location.href,
+                        timestamp: Date.now(),
+                        type: 'Content',
+                        details: {
+                            pattern: pattern.toString(),
+                            content: scriptContent.substring(0, 200) + '...',
+                        },
+                    };
+                    this.detectedThreats.push(threat);
                     
-                    // Block suspicious inline scripts
                     if (script.innerHTML && !script.src) {
                         script.type = 'text/blocked';
                         script.innerHTML = '// Script blocked by AO Shield';
                     }
-                }
-            }
-
-            // Check for AO process interactions
-            if (this.containsAOProcessCode(scriptContent)) {
-                threatCount++;
-                this.detectedThreats.push({
-                    type: 'ao_process_interaction',
-                    element: `script[${index}]`,
-                    reason: 'Contains AO process interaction code'
-                });
-            }
-
-            // Check for Arweave wallet interactions
-            if (this.containsArweaveWalletCode(scriptContent)) {
-                const isSecure = this.validateArweaveWalletCode(scriptContent);
-                if (!isSecure) {
-                    threatCount++;
-                    this.detectedThreats.push({
-                        type: 'suspicious_wallet_interaction',
-                        element: `script[${index}]`,
-                        reason: 'Potentially malicious wallet interaction'
-                    });
+                    break; 
                 }
             }
         });
-
-        return threatCount;
-    }
-
-    containsAOProcessCode(code) {
-        const aoPatterns = [
-            /Process\.(send|spawn|kill)/i,
-            /ao\.connect/i,
-            /createProcess/i,
-            /sendMessage.*process/i
-        ];
-        
-        return aoPatterns.some(pattern => pattern.test(code));
-    }
-
-    containsArweaveWalletCode(code) {
-        const walletPatterns = [
-            /arweave\.wallets/i,
-            /createTransaction/i,
-            /wallet\.sign/i,
-            /connectWallet/i
-        ];
-        
-        return walletPatterns.some(pattern => pattern.test(code));
-    }
-
-    validateArweaveWalletCode(code) {
-        // Check for suspicious wallet operations
-        const suspiciousPatterns = [
-            /wallet.*private.*key/i,
-            /steal.*wallet/i,
-            /export.*secret/i,
-            /keyfile.*copy/i
-        ];
-        
-        return !suspiciousPatterns.some(pattern => pattern.test(code));
     }
 
     scanIframes() {
-        let threatCount = 0;
         const iframes = document.querySelectorAll('iframe');
         
-        iframes.forEach((iframe, index) => {
+        iframes.forEach((iframe) => {
             const src = iframe.src || '';
-            
-            // Check for suspicious iframe sources
             if (this.isSuspiciousUrl(src)) {
-                threatCount++;
-                this.detectedThreats.push({
-                    type: 'suspicious_iframe',
-                    element: `iframe[${index}]`,
-                    src: src,
-                    ecosystem: 'ao'
-                });
+                const threat = {
+                    id: `${Date.now()}-iframe-${src}`,
+                    title: 'Suspicious Iframe Detected',
+                    riskLevel: 'High',
+                    riskScore: 80,
+                    message: `An iframe with a suspicious source was detected: ${src}`,
+                    source: window.location.href,
+                    timestamp: Date.now(),
+                    type: 'Content',
+                    details: {
+                        content: `<iframe src="${src}">`,
+                    },
+                };
+                this.detectedThreats.push(threat);
                 
-                // Block suspicious iframe
                 iframe.src = 'about:blank';
                 iframe.style.display = 'none';
             }
         });
-
-        return threatCount;
     }
 
     isSuspiciousUrl(url) {
+        if (!url) return false;
         const suspiciousDomains = [
             'bit.ly', 'tinyurl', 'goo.gl',
             'fake-arweave.com', 'phishing-ao.net'
@@ -269,143 +214,56 @@ class AOShieldContent {
     }
 
     scanForms() {
-        let threatCount = 0;
         const forms = document.querySelectorAll('form');
         
-        forms.forEach((form, index) => {
+        forms.forEach((form) => {
             const action = form.action || '';
             
-            // Check for forms submitting to suspicious URLs
             if (this.isSuspiciousUrl(action)) {
-                threatCount++;
-                this.detectedThreats.push({
-                    type: 'suspicious_form',
-                    element: `form[${index}]`,
-                    action: action,
-                    ecosystem: 'ao'
-                });
+                const threat = {
+                    id: `${Date.now()}-form-${action}`,
+                    title: 'Suspicious Form Action',
+                    riskLevel: 'High',
+                    riskScore: 95,
+                    message: `A form on this page submits data to a suspicious URL: ${action}`,
+                    source: window.location.href,
+                    timestamp: Date.now(),
+                    type: 'Content',
+                    details: {
+                        content: form.outerHTML.substring(0, 300) + '...'
+                    },
+                };
+                this.detectedThreats.push(threat);
             }
 
-            // Check for wallet connection forms on non-HTTPS pages
             const walletInputs = form.querySelectorAll('input[name*="wallet"], input[placeholder*="wallet"]');
             if (walletInputs.length > 0 && window.location.protocol !== 'https:') {
-                threatCount++;
-                this.detectedThreats.push({
-                    type: 'insecure_wallet_form',
-                    element: `form[${index}]`,
-                    reason: 'Wallet form on non-HTTPS page'
-                });
+                const threat = {
+                    id: `${Date.now()}-insecure-form`,
+                    title: 'Insecure Wallet Form',
+                    riskLevel: 'Medium',
+                    riskScore: 65,
+                    message: 'A form is asking for wallet information on an insecure (non-HTTPS) page.',
+                    source: window.location.href,
+                    timestamp: Date.now(),
+                    type: 'Content',
+                    details: {
+                        content: form.outerHTML.substring(0, 300) + '...'
+                    },
+                };
+                this.detectedThreats.push(threat);
             }
         });
-
-        return threatCount;
     }
 
-    async scanAOProcesses() {
-        let threatCount = 0;
-        
-        // Extract AO process IDs from page content
-        const processIdPattern = /[a-zA-Z0-9_-]{43}/g;
-        const pageContent = document.documentElement.innerHTML;
-        const matches = pageContent.match(processIdPattern) || [];
-        
-        for (const match of matches) {
-            // Basic validation for AO process ID format
-            if (this.isValidAOProcessId(match)) {
-                this.aoProcesses.add(match);
-                
-                // Validate process if we have access to background script
-                try {
-                    const validation = await this.validateProcessSecurity(match);
-                    if (!validation.isValid) {
-                        threatCount++;
-                        this.detectedThreats.push({
-                            type: 'malicious_ao_process',
-                            processId: match,
-                            threats: validation.threats,
-                            ecosystem: 'ao'
-                        });
-                    }
-                } catch (error) {
-                    console.warn('Could not validate AO process:', match, error);
-                }
-            }
-        }
-
-        return threatCount;
-    }
-
-    async scanArweaveTransactions() {
-        let threatCount = 0;
-        
-        // Extract Arweave transaction IDs from page content
-        const txIdPattern = /[a-zA-Z0-9_-]{43}/g;
-        const pageContent = document.documentElement.innerHTML;
-        const matches = pageContent.match(txIdPattern) || [];
-        
-        for (const match of matches) {
-            // Basic validation for Arweave transaction ID format
-            if (this.isValidArweaveTransactionId(match)) {
-                this.arweaveTransactions.add(match);
-                
-                // Basic validation for suspicious transaction patterns
-                const context = this.getTransactionContext(match);
-                if (this.isSuspiciousTransactionContext(context)) {
-                    threatCount++;
-                    this.detectedThreats.push({
-                        type: 'suspicious_arweave_transaction',
-                        txId: match,
-                        context: context,
-                        ecosystem: 'arweave'
-                    });
-                }
-            }
-        }
-
-        return threatCount;
-    }
-
-    isValidAOProcessId(id) {
-        return id && id.length === 43 && /^[a-zA-Z0-9_-]+$/.test(id);
-    }
-
-    isValidArweaveTransactionId(id) {
-        return id && id.length === 43 && /^[a-zA-Z0-9_-]+$/.test(id);
-    }
-
-    getTransactionContext(txId) {
-        const pageContent = document.documentElement.innerHTML;
-        const index = pageContent.indexOf(txId);
-        if (index === -1) return '';
-        
-        const start = Math.max(0, index - 100);
-        const end = Math.min(pageContent.length, index + 143);
-        return pageContent.substring(start, end);
-    }
-
-    isSuspiciousTransactionContext(context) {
-        const suspiciousPatterns = [
-            /malicious/i,
-            /hack/i,
-            /steal/i,
-            /phishing/i,
-            /scam/i
-        ];
-        
-        return suspiciousPatterns.some(pattern => pattern.test(context));
-    }
-
-    async validateProcessSecurity(processId) {
-        // Send validation request to background script
-        return new Promise((resolve) => {
-            chrome.runtime.sendMessage({
-                action: 'validateAOProcess',
-                processId: processId
-            }, (response) => {
-                resolve(response || { isValid: true, threats: [] });
-            });
-        });
-    }
+    // The following methods are placeholders for future, more complex validation
+    async scanAOProcesses() { return; }
+    async scanArweaveTransactions() { return; }
+    isValidAOProcessId(id) { return false; }
+    isValidArweaveTransactionId(id) { return false; }
+    getTransactionContext(txId) { return ''; }
+    isSuspiciousTransactionContext(context) { return false; }
+    async validateProcessSecurity(processId) { return { isValid: true }; }
 
     monitorAOEcosystem() {
         // Monitor for AO-specific events
@@ -421,44 +279,42 @@ class AOShieldContent {
     }
 
     handleAOProcessEvent(eventData) {
-        if (eventData.processId) {
-            this.aoProcesses.add(eventData.processId);
-            
-            // Check for suspicious process events
-            if (eventData.action && /kill|destroy|hack/i.test(eventData.action)) {
-                this.detectedThreats.push({
-                    type: 'suspicious_ao_process_event',
-                    processId: eventData.processId,
-                    action: eventData.action,
-                    ecosystem: 'ao'
-                });
-                
-                chrome.runtime.sendMessage({
-                    action: 'threatDetected',
-                    details: `Suspicious AO process event: ${eventData.action} on ${eventData.processId}`
-                });
-            }
+        if (eventData.processId && eventData.action && /kill|destroy|hack/i.test(eventData.action)) {
+            const threat = {
+                id: `${Date.now()}-ao-event-${eventData.processId}`,
+                title: 'Suspicious AO Process Event',
+                riskLevel: 'High',
+                riskScore: 90,
+                message: `A suspicious action (${eventData.action}) was detected on an AO process.`,
+                source: window.location.href,
+                timestamp: Date.now(),
+                type: 'Transaction', // Categorizing as transaction-like
+                details: {
+                    content: JSON.stringify(eventData),
+                },
+            };
+            this.detectedThreats.push(threat);
+            this.startScanning(); // Re-scan and report
         }
     }
 
     handleArweaveTransactionEvent(eventData) {
-        if (eventData.txId) {
-            this.arweaveTransactions.add(eventData.txId);
-            
-            // Check for suspicious transaction events
-            if (eventData.suspicious) {
-                this.detectedThreats.push({
-                    type: 'suspicious_arweave_transaction_event',
-                    txId: eventData.txId,
-                    reason: eventData.reason,
-                    ecosystem: 'arweave'
-                });
-                
-                chrome.runtime.sendMessage({
-                    action: 'threatDetected',
-                    details: `Suspicious Arweave transaction: ${eventData.reason}`
-                });
-            }
+        if (eventData.txId && eventData.suspicious) {
+            const threat = {
+                id: `${Date.now()}-ar-event-${eventData.txId}`,
+                title: 'Suspicious Arweave Transaction Event',
+                riskLevel: 'Medium',
+                riskScore: 70,
+                message: `A suspicious Arweave transaction was detected: ${eventData.reason}`,
+                source: window.location.href,
+                timestamp: Date.now(),
+                type: 'Transaction',
+                details: {
+                    content: JSON.stringify(eventData),
+                },
+            };
+            this.detectedThreats.push(threat);
+            this.startScanning(); // Re-scan and report
         }
     }
 

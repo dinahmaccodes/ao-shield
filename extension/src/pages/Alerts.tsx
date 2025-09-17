@@ -1,65 +1,46 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { AlertTriangle, Shield, ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
 import Card from "../components/Card";
+import { Threat } from "../types";
 
 interface AlertsProps {
-  onViewDashboard: (alert: any) => void;
+  onViewDashboard: (alert: Threat) => void;
 }
 
 const Alerts: React.FC<AlertsProps> = ({ onViewDashboard }) => {
-  const alerts = [
-    {
-      id: 1,
-      title: "Fraud Alert",
-      riskLevel: "High",
-      message: "Suspicious transaction detected",
-      amount: "0.5 ETH",
-      to: "0x4343...bcc",
-      riskScore: 98,
-      color: "red",
-    },
-    {
-      id: 2,
-      title: "Security Alert",
-      riskLevel: "Medium",
-      message: "Unusual wallet activity",
-      amount: "0.2 ETH",
-      to: "0x7432...def",
-      riskScore: 65,
-      color: "yellow",
-    },
-    {
-      id: 3,
-      title: "Security Alert",
-      riskLevel: "Low",
-      message: "New contract interaction",
-      amount: "0.1 ETH",
-      to: "0x9876...abc",
-      riskScore: 25,
-      color: "green",
-    },
-    {
-      id: 4,
-      title: "Security Alert",
-      riskLevel: "Medium",
-      message: "Unknown token approval",
-      amount: "0.3 ETH",
-      to: "0x1234...xyz",
-      riskScore: 72,
-      color: "yellow",
-    },
-    {
-      id: 5,
-      title: "Security Alert",
-      riskLevel: "Low",
-      message: "Standard DeFi interaction",
-      amount: "0.05 ETH",
-      to: "0x5678...def",
-      riskScore: 15,
-      color: "green",
-    },
-  ];
+  const [alerts, setAlerts] = useState<Threat[]>([]);
+
+  useEffect(() => {
+    const fetchAlerts = () => {
+      chrome.storage.local.get("protectionHistory", (result) => {
+        if (chrome.runtime.lastError) {
+          console.error(chrome.runtime.lastError.message);
+          return;
+        }
+        if (result.protectionHistory) {
+          setAlerts(result.protectionHistory);
+        }
+      });
+    };
+
+    fetchAlerts();
+
+    const listener = (
+      changes: { [key: string]: chrome.storage.StorageChange },
+      area: string
+    ) => {
+      if (area === "local" && changes.protectionHistory) {
+        setAlerts(changes.protectionHistory.newValue || []);
+      }
+    };
+
+    chrome.storage.onChanged.addListener(listener);
+
+    return () => {
+      chrome.storage.onChanged.removeListener(listener);
+    };
+  }, []);
 
   const getRiskColor = (level: string) => {
     switch (level) {
@@ -126,8 +107,7 @@ const Alerts: React.FC<AlertsProps> = ({ onViewDashboard }) => {
                         {alert.message}
                       </p>
                       <div className="text-xs text-gray-500">
-                        <div>Amount: {alert.amount}</div>
-                        <div>To: {alert.to}</div>
+                        <div>Source: {new URL(alert.source).hostname}</div>
                       </div>
                     </div>
                     <ChevronRight size={16} className="text-gray-400 mt-2" />
