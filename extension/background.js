@@ -123,6 +123,7 @@ class AOShieldBackground {
                 break;
 
             case 'threatDetected':
+                // The `details` will be a complete Threat object from the content script
                 await this.handleThreatDetection(message.details, sender.tab);
                 sendResponse({ success: true });
                 break;
@@ -160,17 +161,27 @@ class AOShieldBackground {
             const urlThreats = this.checkUrlThreats(tab.url);
 
             if (urlThreats > 0) {
-                await this.handleThreatDetection(
-                    `Suspicious URL detected: ${tab.url}`,
-                    tab
-                );
+                const threat = {
+                    id: `${Date.now()}-${tab.id}`,
+                    title: 'Suspicious URL Detected',
+                    riskLevel: 'Medium',
+                    riskScore: 60,
+                    message: `The URL ${tab.url} matches a known threat pattern.`,
+                    source: tab.url,
+                    timestamp: Date.now(),
+                    type: 'URL',
+                    details: {
+                        content: tab.url,
+                    },
+                };
+                await this.handleThreatDetection(threat, tab);
             }
 
             // Inject content script to scan page content
             chrome.scripting
                 .executeScript({
                     target: { tabId: tab.id },
-                    files: ['content.js'],
+                    files: ['content_ao.js'],
                 })
                 .catch(() => {
                     // Ignore errors for pages where content scripts can't be injected
@@ -226,6 +237,7 @@ class AOShieldBackground {
         if (!this.isProtected) return {};
 
         const url = details.url;
+        const source = details.initiator || new URL(details.url).hostname;
 
         // Block known tracking domains if tracking protection is enabled
         if (this.enableTracking) {
@@ -239,10 +251,20 @@ class AOShieldBackground {
 
             for (const domain of trackingDomains) {
                 if (url.includes(domain)) {
-                    this.handleThreatDetection(
-                        `Blocked tracking request to ${domain}`,
-                        null
-                    );
+                    const threat = {
+                        id: `${Date.now()}-${details.requestId}`,
+                        title: 'Tracker Blocked',
+                        riskLevel: 'Low',
+                        riskScore: 10,
+                        message: `Blocked a tracking request to ${domain}`,
+                        source: source,
+                        timestamp: Date.now(),
+                        type: 'URL',
+                        details: {
+                            content: url,
+                        },
+                    };
+                    this.handleThreatDetection(threat, null);
                     return { cancel: true };
                 }
             }
@@ -251,10 +273,21 @@ class AOShieldBackground {
         // Check for malicious patterns in URLs
         for (const pattern of this.threatPatterns) {
             if (pattern.test(url)) {
-                this.handleThreatDetection(
-                    `Blocked malicious request: ${url}`,
-                    null
-                );
+                const threat = {
+                    id: `${Date.now()}-${details.requestId}`,
+                    title: 'Malicious Request Blocked',
+                    riskLevel: 'High',
+                    riskScore: 85,
+                    message: `Blocked a malicious request matching the pattern: ${pattern.toString()}`,
+                    source: source,
+                    timestamp: Date.now(),
+                    type: 'URL',
+                    details: {
+                        pattern: pattern.toString(),
+                        content: url,
+                    },
+                };
+                this.handleThreatDetection(threat, null);
                 return { cancel: true };
             }
         }
@@ -262,39 +295,32 @@ class AOShieldBackground {
         return {};
     }
 
-    async handleThreatDetection(details, tab) {
+    async handleThreatDetection(threat, tab) {
         // Increment alert count
-        const result = await chrome.storage.local.get(['alertCount']);
+        const result = await chrome.storage.local.get(['alertCount', 'protectionHistory']);
         const alertCount = (result.alertCount || 0) + 1;
-        await chrome.storage.local.set({ alertCount: alertCount });
+        const history = result.protectionHistory || [];
 
         // Add to history
-        const historyItem = {
-            time: new Date().toLocaleString(),
-            action: details,
-            id: Date.now(),
-        };
-
-        const historyResult = await chrome.storage.local.get([
-            'protectionHistory',
-        ]);
-        const history = historyResult.protectionHistory || [];
-        history.unshift(historyItem);
+        history.unshift(threat);
 
         // Keep only last 50 items
         if (history.length > 50) {
             history.splice(50);
         }
 
-        await chrome.storage.local.set({ protectionHistory: history });
+        await chrome.storage.local.set({
+            alertCount: alertCount,
+            protectionHistory: history
+        });
 
         // Show notification if enabled
         if (this.enableNotifications) {
             chrome.notifications.create({
                 type: 'basic',
                 iconUrl: 'icons/icon48.png',
-                title: 'AO Shield - Threat Blocked',
-                message: details,
+                title: `AO Shield - ${threat.title}`,
+                message: threat.message,
             });
         }
 

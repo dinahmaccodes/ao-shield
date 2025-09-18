@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Test Page for AO Shield</title>
+</head>
+<body>
+    <h1>AO Shield Test Page</h1>
+
+    <!-- 1. Test for Phishing Text -->
+    <p>Please take this urgent ao process action to verify your wallet.</p>
+
+    <!-- 2. Test for Malicious URL in text -->
+    <p>Check out this site: coinhive.com</p>
+
+    <!-- 3. Test for Suspicious Inline Script -->
+    <script>
+        // This script will be blocked by AO Shield
+        console.log("Attempting to run a suspicious script...");
+        const maliciousCode = "loadstring(base64.decode(...))";
+        console.log(maliciousCode);
+    </script>
+
+    <!-- 4. Test for Blocked Iframe -->
+    <iframe src="http://bit.ly/fake-malicious-link"></iframe>
+
+</body>
+</html>
